@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* *CSS DEBUGGER */
+/* * {
+        background: #000 !important;
+        color: #0f0 !important;
+        outline: solid #f00 1px !important;
+      } */
+
+body {
+  background: rgb(63, 94, 251);
+  background: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 9%,
+    rgba(149, 117, 205, 1) 91%
+  );
+  font-family: 'Poppins', sans-serif;
+  color: 'white';
+  margin: 0;
+  padding: 0;
+}
+.container {
+  display: block;
+  justify-content: center;
+  margin: 10px 20px;
+}
+
+/* SCREENS */
+.home-screen-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 3px solid blue;
+}
+/* Utility classes */
+
+ .text-center{
+    text-align: center;
+ }
+.row {
+  flex-direction: row;
+}
+.column {
+  flex-direction: column;
+}
+.justify-center {
+  justify-content: center;
+}
+.w-25 {
+  width: 25%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-75 {
+  width: 75%;
+}
+.w-100 {
+  width: 100%;
+}
+.p-1 {
+  padding: 1px;
+}
+.p-2 {
+  padding: 2px;
+}
+.p-3 {
+  padding: 3px;
+}
+.p-4 {
+  padding: 4px;
+}
+.p-5 {
+  padding: 5px;
+}
+.p-10 {
+  padding: 10px;
+}
+.p-20 {
+  padding: 20px;
+}
+.p-30 {
+  padding: 30px;
+}
+.p-40 {
+  padding: 40px;
+}
+.m-1 {
+  margin: 1px;
+}
+.m-2 {
+  margin: 2px;
+}
+.m-3 {
+  margin: 3px;
+}
+.m-4 {
+  margin: 4px;
+}
+.m-5 {
+  margin: 5px;
+}
+.m-10 {
+  margin: 10px;
+}
+.m-20 {
+  margin: 20px;
+}
+.m-30 {
+  margin: 30px;
+}
+.m-40 {
+  margin: 40px;
+}
