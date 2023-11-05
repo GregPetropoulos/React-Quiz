@@ -25,6 +25,7 @@ body {
   color: 'white';
   margin: 0;
   padding: 0;
+  color: whitesmoke;
 }
 .container {
   display: flex;
@@ -39,36 +40,107 @@ body {
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
   flex-direction: row;
-  border: 3px solid blue;
+  /* border: 3px solid blue; */
 }
-
+.edit-list {
+  flex-direction: row;
+}
 .quiz-list {
   flex-direction: column;
   display: flex;
+  flex-wrap: wrap;
   /* justify-content: center; */
   /* align-items: center; */
-  width: 25%;
+  width: 50%;
 }
-.quiz-container {
-  display: flex;
-  max-width: 440px;
-  flex-direction: column;
-  align-items: center;
+.background-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  padding: 40px;
+}
+.quiz-modal {
+  width: 95%;
+  max-width: 1000px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  background-color: dodgerblue;
   border: 2px solid whitesmoke;
   padding: 15px 20px;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .question-answer {
+  /* align-items: center; */
+  justify-content: center;
   background-color: transparent;
-  margin: 10px 20px;
+  flex-direction: row;
+  margin: 20px;
   border-radius: 10px;
   padding: 10px;
   border: 2px solid whitesmoke;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* BUTTONS */
+.btn {
+  font-weight: 0;
+  font-size: 14px;
+  color: #fff;
+  background-color: transparent;
+  padding: 10px 20px;
+  border: 1.5px solid dodgerblue;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+  border-radius: 50px;
+  transition: 833ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* width: 100%; */
+  cursor: pointer;
+  margin: 10px;
+}
+
+.btn:hover {
+  transition: 833ms;
+  padding: 10px 40px;
+  transform: translateY(-0px);
+  background-color: #fff;
+  color: #0066cc;
+  border: solid 2px #0066cc;
+}
+.selected {
+  background-color: rgb(120, 182, 120);
+  font-weight: 0;
+  font-size: 14px;
+  color: #fff;
+  padding: 10px 20px;
+  border: 1.5px solid rgb(95, 175, 95);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+  border-radius: 50px;
+  transition: 833ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* width: 50%; */
+  cursor: pointer;
+  margin: 10px;
+}
+
+.danger {
+  color: red;
 }
 
 /* Utility classes */
@@ -84,6 +156,9 @@ body {
 }
 .justify-around {
   justify-content: space-around;
+}
+.align-center {
+  align-items: center;
 }
 .flex-wrap {
   flex-wrap: wrap;
