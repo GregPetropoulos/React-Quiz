@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import ModalQuiz from '../components/ModalQuiz';
 import EditQuiz from '../components/EditQuiz';
+import { getData } from '../context/QuizState';
+import { QuizContext } from '../context/quizContext';
 
 const HomeScreen = () => {
+const {state,dispatch}=useContext(QuizContext)
+const {data,isSubmitted}=state
+console.log("DATATATATA",state)
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
   const [quizBank, setQuizBank] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentEdit, setCurrentEdit] = useState();
 
   // TODO IMPLEMENT CONTEXT API
@@ -20,22 +25,7 @@ const HomeScreen = () => {
     let unmount = true;
 
     if (unmount) {
-      try {
-        const fetchData = async () => {
-          const response = await window.fetch('../../data/data.json');
-          if (!response.ok) {
-            throw new Error(
-              ` Error Status Code ${response.status} Message: ${response.statusText}`
-            );
-          } else {
-            const jsonData = await response.json();
-            setData(jsonData);
-          }
-        };
-        fetchData();
-      } catch (err) {
-        console.log(`Network Error ${err}`);
-      }
+      getData(dispatch)
     }
 
     return () => (unmount = false);
@@ -46,8 +36,10 @@ const HomeScreen = () => {
   if (isSubmitted === true) {
     // Once the form is submitted from the modal, reset the state and save the quiz to the quiz bank
     setQuizBank((prev) => [...prev, data]);
-    setIsSubmitted(false);
-    setData([]);
+    dispatch({type:'IS_SUBMITTED',payload:false})
+    // setIsSubmitted(false);
+    // setData([]);
+    dispatch({type:'CLEAR_DATA'})
   }
  
   const handleEdit = (item) => {
@@ -85,9 +77,6 @@ const HomeScreen = () => {
       </div>
       {isOpenModal && (
         <ModalQuiz
-          data={data}
-          setData={setData}
-          setIsSubmitted={setIsSubmitted}
           setIsOpenModal={setIsOpenModal}
         />
       )}
