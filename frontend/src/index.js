@@ -1,3 +1,7 @@
+// Author: Greg Petropoulos
+// DATE: 11/5/23
+// BSN-QUIZ
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
@@ -9,13 +13,11 @@ import {
 import './assets/styles/index.css'; //custom styles
 import App from './App';
 import HomeScreen from './screens/HomeScreen';
-// import QuizScreen from './screens/QuizScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
-      {/* <Route path='/new-quiz' element={<QuizScreen />} /> */}
     </Route>
   )
 );
