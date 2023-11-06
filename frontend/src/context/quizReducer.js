@@ -6,7 +6,11 @@ import {
   CLEAR_DATA,
   INCREMENT_ID,
   UPDATE_SCORE,
-  ADD_TO_QUIZBANK
+  ADD_TO_QUIZBANK,
+  UPDATE_EDITS_TO_CURRENT,
+  ADD_TO_CURRENT_EDIT,
+  UPDATE_QUIZBANK,
+
 } from './types';
 
 const quizReducer = (state, action) => {
@@ -43,6 +47,18 @@ const quizReducer = (state, action) => {
         return {
             ...state,
             quizBank:[...state.quizBank,action.payload.newQuiz]
+        }
+    }
+    case ADD_TO_CURRENT_EDIT:{
+        return{
+            ...state,
+            currentEdit:action.payload.item
+        }
+    }
+    case UPDATE_QUIZBANK:{
+        return{
+            ...state,
+            quizBank:state.quizBank.map(item=> item.id===action.payload.quizEdited.id? action.payload.quizEdited:item)
         }
     }
 
