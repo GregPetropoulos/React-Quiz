@@ -1,30 +1,19 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { QuizContext } from '../context/quizContext';
 
-const ModalQuiz = ({  setIsOpenModal, }) => {
-  const {state,dispatch}=useContext(QuizContext)
-  const {data}=state
-  console.log("state in modalquiz",state)
+const ModalQuiz = ({ setIsOpenModal }) => {
+  const { state, dispatch } = useContext(QuizContext);
+  const { data } = state;
   const [selected, setSelected] = useState('');
   const [isDisabled, setDisabled] = useState(false);
   const [isFeedback, setIsFeedback] = useState(false);
   const handleAnswer = (answer, answerId) => {
     setSelected(answer);
     if (answerId === null) {
-      // Updating the score to increment,update the answer_id,update feedback
+      // When an answer is chosen, set the answer_id accordingly and increment score if is_true ===true
+      dispatch({ type: 'UPDATE_SCORE', payload: { answer, answerId } });
       setIsFeedback(true);
-      // setData((prev) => ({
-      //   ...prev,
-      //   score: answer.is_true ? prev.score + 1 : prev.score,
-      //   questions_answers: [
-      //     ...prev.questions_answers.map((item) =>
-      //       item.answers.find((item) => item === answer)
-      //         ? { ...item, answer_id: answer.id }
-      //         : item
-      //     )
-      //   ]
-      // }));
     }
     if (answer.is_true === false) {
       setIsFeedback(false);
@@ -33,17 +22,20 @@ const ModalQuiz = ({  setIsOpenModal, }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setData((prev) => ({ ...prev, id: uuidv4() }));
-    dispatch({type:'INCREMENT_ID',payload:{id:uuidv4()}})
-    data.questions_answers.forEach((item) => {
-      if (item.answer_id !== null) {
-        dispatch({type:"IS_SUBMITTED",payload:true})
-        // setIsSubmitted(true);
-        setIsOpenModal(false);
-      }
-      //TODO SET THE SCORE TO 0 if all the answer_id are null
-    });
+    // If we have answer_id for each question then its ready for submission
+    // Create a new data and update the quiz bank,
+    const isAnswersChosen = data.questions_answers.find(
+      (item) => item.answer_id !== null
+    );
+    if (isAnswersChosen) {
+      const newQuiz = data;
+      newQuiz.id = uuidv4();
+      dispatch({ type: 'ADD_TO_QUIZBANK', payload: { newQuiz } });
+    }
+    setIsOpenModal(false);
+    //TODO SET THE SCORE TO 0 if all the answer_id are null
   };
+
   if (data === null || data === undefined) {
     return null;
   }

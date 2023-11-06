@@ -4,8 +4,9 @@ import {
   SET_ALERT,
   DATA_ERROR,
   CLEAR_DATA,
-  IS_SUBMITTED,
-  INCREMENT_ID
+  INCREMENT_ID,
+  UPDATE_SCORE,
+  ADD_TO_QUIZBANK
 } from './types';
 
 const quizReducer = (state, action) => {
@@ -21,16 +22,29 @@ const quizReducer = (state, action) => {
         ...state,
         data: []
       };
-      case IS_SUBMITTED:
+    case INCREMENT_ID:
+    return{
+        ...state,
+        data:{...state.data,...action.payload}
+    };
+    case UPDATE_SCORE:
         return {
             ...state,
-            isSubmitted:action.payload
+            data:{...state.data,
+                    score:action.payload.answer.is_true? state.data.score+1: state.data.score,
+                    questions_answers:[...state.data.questions_answers?.map((item) => item.answers.find((item) => item === action.payload.answer)
+                        ? { ...item, answer_id: action.payload.answer.id }
+                        : item
+                    )]
+                }
+                    
+        };
+    case ADD_TO_QUIZBANK:{
+        return {
+            ...state,
+            quizBank:[...state.quizBank,action.payload.newQuiz]
         }
-        case INCREMENT_ID:
-            return{
-                ...state,
-                data:{...state.data,...action.payload}
-            }
+    }
 
     default:
       throw new Error(`Unsupported type of: ${action.type} in contactReducer`);

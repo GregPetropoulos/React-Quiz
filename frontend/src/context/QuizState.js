@@ -25,7 +25,8 @@ export const getData = async (dispatch) => {
 const QuizState = (props) => {
   const initialState = {
     data: null,
-    isSubmitted:false
+    isSubmitted:false,
+    quizBank:[]
   };
   const [state, dispatch] = useReducer(quizReducer, initialState);
   return (

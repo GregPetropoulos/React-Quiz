@@ -1,18 +1,15 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ModalQuiz from '../components/ModalQuiz';
 import EditQuiz from '../components/EditQuiz';
 import { getData } from '../context/QuizState';
 import { QuizContext } from '../context/quizContext';
 
 const HomeScreen = () => {
-const {state,dispatch}=useContext(QuizContext)
-const {data,isSubmitted}=state
-console.log("DATATATATA",state)
+  const { state, dispatch } = useContext(QuizContext);
+  const { data, quizBank } = state;
+  
   const [isOpenModal, setIsOpenModal] = useState(false);
-  // const [data, setData] = useState();
-  const [quizBank, setQuizBank] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  // const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentEdit, setCurrentEdit] = useState();
 
   // TODO IMPLEMENT CONTEXT API
@@ -20,28 +17,18 @@ console.log("DATATATATA",state)
   // TODO ADD TESTING
   // TODO SEVERAL BUTTONS NEED DISABLED LOGIC
 
-
   useEffect(() => {
     let unmount = true;
 
     if (unmount) {
-      getData(dispatch)
+      getData(dispatch);
     }
 
-    return () => (unmount = false);
-
+    
     // When the submission occurs quizBank will change and we watch for it, run a fetch call to get fresh response into data state variable
+    return () => (unmount = false);
   }, [quizBank.length]);
 
-  if (isSubmitted === true) {
-    // Once the form is submitted from the modal, reset the state and save the quiz to the quiz bank
-    setQuizBank((prev) => [...prev, data]);
-    dispatch({type:'IS_SUBMITTED',payload:false})
-    // setIsSubmitted(false);
-    // setData([]);
-    dispatch({type:'CLEAR_DATA'})
-  }
- 
   const handleEdit = (item) => {
     setIsEdit(!isEdit);
     setCurrentEdit(item);
@@ -63,23 +50,22 @@ console.log("DATATATATA",state)
           ))
         : null}
       {isEdit ? (
-        <EditQuiz setQuizBank={setQuizBank} quizBank={quizBank} setCurrentEdit={setCurrentEdit} currentEdit={currentEdit} />
+        <EditQuiz
+          // setQuizBank={setQuizBank}
+          quizBank={quizBank}
+          setCurrentEdit={setCurrentEdit}
+          currentEdit={currentEdit}
+        />
       ) : null}
       <div className='column justify-center w-100'>
         <h3 className='m-4'>Welcome to the Quiz Creator</h3>
         {!isOpenModal && (
-          <button
-            className='btn w-100'
-            onClick={() => setIsOpenModal(true)}>
+          <button className='btn w-100' onClick={() => setIsOpenModal(true)}>
             Add Quiz
           </button>
         )}
       </div>
-      {isOpenModal && (
-        <ModalQuiz
-          setIsOpenModal={setIsOpenModal}
-        />
-      )}
+      {isOpenModal && <ModalQuiz setIsOpenModal={setIsOpenModal} />}
     </div>
   );
 };
