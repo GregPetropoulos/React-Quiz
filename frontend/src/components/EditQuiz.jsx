@@ -1,19 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useRef, useContext } from 'react';
+import { QuizContext } from '../context/quizContext';
 
-const EditQuiz = ({ currentEdit, setCurrentEdit, setQuizBank }) => {
-  const [isEditSubmitted, setIsEditSubmitted] = useState(false);
-  useEffect(() => {
-    if (isEditSubmitted === true) {
-      setIsEditSubmitted(false);
-      setQuizBank((prev) => [...prev, currentEdit]);
-    }
-  }, [isEditSubmitted]);
+const EditQuiz = () => {
+  const { state, dispatch } = useContext(QuizContext);
+  const {  currentEdit } = state;
 
   const titleRef = useRef();
   const urlRef = useRef();
   const descriptionRef = useRef();
-  // EDIT THIS STATE AND PUSH BACK IN TO THE quizBank
+
   const handleReset = () => {
     urlRef.current.value = '';
     titleRef.current.value = '';
@@ -21,14 +16,14 @@ const EditQuiz = ({ currentEdit, setCurrentEdit, setQuizBank }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCurrentEdit((prev) => ({
-      ...prev,
-      id: `edited--${uuidv4()}`,
+    const quizEdited = {
+      ...currentEdit,
+      editDate: new Date(),
       title: titleRef?.current?.value || currentEdit.title,
       description: descriptionRef?.current?.value || currentEdit.description,
       url: urlRef?.current?.value || currentEdit.url
-    }));
-    setIsEditSubmitted(true);
+    };
+    dispatch({ type: 'UPDATE_QUIZBANK', payload: { quizEdited } });
   };
 
   return (

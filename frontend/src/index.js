@@ -13,6 +13,7 @@ import {
 import './assets/styles/index.css'; //custom styles
 import App from './App';
 import HomeScreen from './screens/HomeScreen';
+import QuizState from './context/QuizState';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,8 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QuizState>
+      <RouterProvider router={router} />
+    </QuizState>
   </React.StrictMode>
 );

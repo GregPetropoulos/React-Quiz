@@ -1,59 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ModalQuiz from '../components/ModalQuiz';
 import EditQuiz from '../components/EditQuiz';
+import { getData } from '../context/QuizState';
+import { QuizContext } from '../context/quizContext';
 
 const HomeScreen = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [data, setData] = useState();
-  const [quizBank, setQuizBank] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [currentEdit, setCurrentEdit] = useState();
+  const { state, dispatch } = useContext(QuizContext);
+  const { quizBank, currentEdit } = state;
 
-  // TODO IMPLEMENT CONTEXT API
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
   // TODO IMPLEMENT ROBUST PROPTYPES
   // TODO ADD TESTING
   // TODO SEVERAL BUTTONS NEED DISABLED LOGIC
-
 
   useEffect(() => {
     let unmount = true;
 
     if (unmount) {
-      try {
-        const fetchData = async () => {
-          const response = await window.fetch('../../data/data.json');
-          if (!response.ok) {
-            throw new Error(
-              ` Error Status Code ${response.status} Message: ${response.statusText}`
-            );
-          } else {
-            const jsonData = await response.json();
-            setData(jsonData);
-          }
-        };
-        fetchData();
-      } catch (err) {
-        console.log(`Network Error ${err}`);
-      }
+      getData(dispatch);
     }
 
-    return () => (unmount = false);
-
     // When the submission occurs quizBank will change and we watch for it, run a fetch call to get fresh response into data state variable
+    return () => (unmount = false);
   }, [quizBank.length]);
 
-  if (isSubmitted === true) {
-    // Once the form is submitted from the modal, reset the state and save the quiz to the quiz bank
-    setQuizBank((prev) => [...prev, data]);
-    setIsSubmitted(false);
-    setData([]);
-  }
- 
   const handleEdit = (item) => {
     setIsEdit(!isEdit);
-    setCurrentEdit(item);
+    dispatch({ type: 'ADD_TO_CURRENT_EDIT', payload: { item } });
   };
+
   return (
     <div className='home-screen-container'>
       {quizBank.length > 0
@@ -70,27 +47,16 @@ const HomeScreen = () => {
             </div>
           ))
         : null}
-      {isEdit ? (
-        <EditQuiz setQuizBank={setQuizBank} quizBank={quizBank} setCurrentEdit={setCurrentEdit} currentEdit={currentEdit} />
-      ) : null}
+      {isEdit && <EditQuiz />}
       <div className='column justify-center w-100'>
         <h3 className='m-4'>Welcome to the Quiz Creator</h3>
         {!isOpenModal && (
-          <button
-            className='btn w-100'
-            onClick={() => setIsOpenModal(true)}>
+          <button className='btn w-100' onClick={() => setIsOpenModal(true)}>
             Add Quiz
           </button>
         )}
       </div>
-      {isOpenModal && (
-        <ModalQuiz
-          data={data}
-          setData={setData}
-          setIsSubmitted={setIsSubmitted}
-          setIsOpenModal={setIsOpenModal}
-        />
-      )}
+      {isOpenModal && <ModalQuiz setIsOpenModal={setIsOpenModal} />}
     </div>
   );
 };
